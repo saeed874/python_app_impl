@@ -12,15 +12,17 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-      - uses: subosito/flutter-action@v2
-        with:
-          flutter-version: '3.16.0'
 
-      - name: Install dependencies
+      - name: Install Flutter (with Dart 3.6.2)
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.19.6' 
+
+      - name: Run flutter pub get
         run: flutter pub get
 
-      - name: Analyze
+      - name: Run flutter analyze
         run: flutter analyze
 
-      - name: Run tests
+      - name: Run flutter test
         run: flutter test
