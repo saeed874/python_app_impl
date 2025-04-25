@@ -4,7 +4,6 @@ import 'package:python_app/controllers/signup_controller.dart';
 import 'package:python_app/views/signup_view.dart';
 import 'controllers/auth_controller.dart';
 import 'controllers/data_controller.dart';
-import 'views/login_view.dart';
 import 'services/api_service.dart';
 import 'services/storage_service.dart';
 
@@ -12,14 +11,14 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final storageService = StorageService();
   await storageService.init();
-  
+
   runApp(MyApp(storageService: storageService));
 }
 
 class MyApp extends StatelessWidget {
   final StorageService storageService;
-  
-  const MyApp({Key? key, required this.storageService}) : super(key: key);
+
+  const MyApp({super.key, required this.storageService});
 
   @override
   Widget build(BuildContext context) {
@@ -39,9 +38,9 @@ class MyApp extends StatelessWidget {
           ),
         ),
         ChangeNotifierProvider(
-  create: (_) => SignupController(),
-  child: SignUpScreen(),
-)
+          create: (_) => SignupController(),
+          child: const SignUpScreen(),
+        )
       ],
       child: MaterialApp(
         title: 'Flutter MVC Demo',
@@ -49,7 +48,7 @@ class MyApp extends StatelessWidget {
           primarySwatch: Colors.blue,
           useMaterial3: true,
         ),
-        home:  SignUpScreen(),
+        home: const SignUpScreen(),
       ),
     );
   }

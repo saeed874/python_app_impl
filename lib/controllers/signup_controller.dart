@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:python_app/services/api_service.dart';
 import 'package:python_app/views/home_view.dart';
@@ -12,8 +11,8 @@ class SignupController with ChangeNotifier {
   Future<void> signUp({
     required String email,
     required String password,
-required String username,
-required String fullName,
+    required String username,
+    required String fullName,
     required BuildContext context,
   }) async {
     _isLoading = true;
@@ -27,15 +26,19 @@ required String fullName,
         fullName: fullName,
       );
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Sign Up Successful: ${user.email}')),
-      );
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Sign Up Successful: ${user.email}')),
+        );
 
-      Navigator.push(context, MaterialPageRoute(builder: (context) => HomeView()));
+        Navigator.push(context, MaterialPageRoute(builder: (context) => const HomeView()));
+      }
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Signup failed: $e')),
-      );
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Signup failed: $e')),
+        );
+      }
     } finally {
       _isLoading = false;
       notifyListeners();

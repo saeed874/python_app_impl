@@ -5,7 +5,7 @@ import '../controllers/data_controller.dart';
 import 'login_view.dart';
 
 class HomeView extends StatefulWidget {
-  const HomeView({Key? key}) : super(key: key);
+  const HomeView({super.key});
 
   @override
   State<HomeView> createState() => _HomeViewState();
@@ -34,7 +34,7 @@ class _HomeViewState extends State<HomeView> {
             icon: const Icon(Icons.logout),
             onPressed: () async {
               await authController.logout();
-              if (mounted) {
+              if (context.mounted) {
                 Navigator.of(context).pushReplacement(
                   MaterialPageRoute(builder: (_) => const LoginView()),
                 );

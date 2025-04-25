@@ -3,8 +3,10 @@ import 'package:provider/provider.dart';
 import 'package:python_app/controllers/signup_controller.dart';
 
 class SignUpScreen extends StatefulWidget {
+  const SignUpScreen({super.key});
+
   @override
-  _SignUpScreenState createState() => _SignUpScreenState();
+  State<SignUpScreen> createState() => _SignUpScreenState();
 }
 
 class _SignUpScreenState extends State<SignUpScreen> {
@@ -23,31 +25,23 @@ class _SignUpScreenState extends State<SignUpScreen> {
     super.dispose();
   }
 
-  void _login() {
+  void _submitSignUp(BuildContext context) {
     if (_formKey.currentState?.validate() ?? false) {
-      // Proceed with login logic (e.g., call an API or validate locally)
-      print('Username: ${_usernameController.text}');
-      print('Email: ${_emailController.text}');
-      print('Full Name: ${_fullNameController.text}');
-      print('Password: ${_passwordController.text}');
+      final controller = Provider.of<SignupController>(context, listen: false);
+      controller.signUp(
+        email: _emailController.text.trim(),
+        password: _passwordController.text.trim(),
+        username: _usernameController.text.trim(),
+        fullName: _fullNameController.text.trim(), // using as phone
+        context: context,
+      );
     }
   }
-void _submitSignUp(BuildContext context) {
-  if (_formKey.currentState?.validate() ?? false) {
-    final controller = Provider.of<SignupController>(context, listen: false);
-    controller.signUp(
-      email: _emailController.text.trim(),
-      password: _passwordController.text.trim(),
-      username: _usernameController.text.trim(),
-      fullName: _fullNameController.text.trim(), // using as phone
-      context: context,
-    );
-  }
-}
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Login")),
+      appBar: AppBar(title: const Text("Login")),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Form(
@@ -58,7 +52,7 @@ void _submitSignUp(BuildContext context) {
               // Username Field
               TextFormField(
                 controller: _usernameController,
-                decoration: InputDecoration(labelText: 'Username'),
+                decoration: const InputDecoration(labelText: 'Username'),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Please enter your username';
@@ -66,12 +60,12 @@ void _submitSignUp(BuildContext context) {
                   return null;
                 },
               ),
-              SizedBox(height: 16),
-              
+              const SizedBox(height: 16),
+
               // Email Field
               TextFormField(
                 controller: _emailController,
-                decoration: InputDecoration(labelText: 'Email'),
+                decoration: const InputDecoration(labelText: 'Email'),
                 keyboardType: TextInputType.emailAddress,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
@@ -84,12 +78,12 @@ void _submitSignUp(BuildContext context) {
                   return null;
                 },
               ),
-              SizedBox(height: 16),
-              
+              const SizedBox(height: 16),
+
               // Full Name Field
               TextFormField(
                 controller: _fullNameController,
-                decoration: InputDecoration(labelText: 'Full Name'),
+                decoration: const InputDecoration(labelText: 'Full Name'),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Please enter your full name';
@@ -97,12 +91,12 @@ void _submitSignUp(BuildContext context) {
                   return null;
                 },
               ),
-              SizedBox(height: 16),
-              
+              const SizedBox(height: 16),
+
               // Password Field
               TextFormField(
                 controller: _passwordController,
-                decoration: InputDecoration(labelText: 'Password'),
+                decoration: const InputDecoration(labelText: 'Password'),
                 obscureText: true,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
@@ -114,24 +108,23 @@ void _submitSignUp(BuildContext context) {
                   return null;
                 },
               ),
-              SizedBox(height: 32),
-              
+              const SizedBox(height: 32),
+
               // Login Button
               Consumer<SignupController>(
-  builder: (context, controller, _) {
-    return ElevatedButton(
-      onPressed: controller.isLoading ? null : () => _submitSignUp(context),
-      child: controller.isLoading
-          ? CircularProgressIndicator(color: Colors.white)
-          : Text('Sign Up'),
-      style: ElevatedButton.styleFrom(
-        padding: EdgeInsets.symmetric(vertical: 14),
-        minimumSize: Size(double.infinity, 0),
-      ),
-    );
-  },
-),
-
+                builder: (context, controller, _) {
+                  return ElevatedButton(
+                    onPressed: controller.isLoading ? null : () => _submitSignUp(context),
+                    style: ElevatedButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(vertical: 14),
+                      minimumSize: const Size(double.infinity, 0),
+                    ),
+                    child: controller.isLoading
+                        ? const CircularProgressIndicator(color: Colors.white)
+                        : const Text('Sign Up'),
+                  );
+                },
+              ),
             ],
           ),
         ),

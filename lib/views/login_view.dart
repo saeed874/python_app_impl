@@ -2,12 +2,11 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:python_app/services/api_service.dart';
 import '../controllers/auth_controller.dart';
 import 'home_view.dart';
 
 class LoginView extends StatefulWidget {
-  const LoginView({Key? key}) : super(key: key);
+  const LoginView({super.key});
 
   @override
   State<LoginView> createState() => _LoginViewState();
@@ -20,7 +19,6 @@ class _LoginViewState extends State<LoginView> {
 
   @override
   void initState() {
-   
     super.initState();
   }
 
@@ -34,7 +32,7 @@ class _LoginViewState extends State<LoginView> {
   @override
   Widget build(BuildContext context) {
     final authController = Provider.of<AuthController>(context);
-    
+
     // Check if already logged in
     if (authController.isLoggedIn) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -97,18 +95,19 @@ class _LoginViewState extends State<LoginView> {
                   onPressed: authController.isLoading
                       ? null
                       : () async {
-
-                        log("CREDENTIALS: ${_usernameController.text} / ${_passwordController.text}");
+                          log("CREDENTIALS: ${_usernameController.text} / ${_passwordController.text}");
                           if (_formKey.currentState!.validate()) {
                             final success = await authController.login(
                               _usernameController.text,
                               _passwordController.text,
                             );
-                            
-                            if (success && mounted) {
-                              Navigator.of(context).pushReplacement(
-                                MaterialPageRoute(builder: (_) => const HomeView()),
-                              );
+
+                            if (success) {
+                              if (context.mounted) {
+                                Navigator.of(context).pushReplacement(
+                                  MaterialPageRoute(builder: (_) => const HomeView()),
+                                );
+                              }
                             }
                           }
                         },
